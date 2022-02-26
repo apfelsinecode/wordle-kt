@@ -1,4 +1,9 @@
+import kotlin.random.Random
 
+val goalWords5 = listOf("hello", "crane", "words", "doubt", "tango", "audio", "disco", "event", "house", "zebra",
+    "table", "chalk", "music", "world", "japan", "korea", "china", "swiss", "chess", "horse", "sheep", "stand",
+    "funky", "dance", "month", "peace", "apple", "money", "earth", "light", "yield", "steer", "spear", "piece",
+    "crate", "chain", "laser", "movie", "count", "grown", "sport", "build", "charm", "spare", "three", "trunk")
 
 fun wordle() {
 
@@ -10,8 +15,9 @@ fun wordle() {
 
     //val goal = Word("hello")
 
-    println("Enter goal:")
-    val goal = readLine()!!
+    // println("Enter goal:")
+
+    val goal = goalWords5[Random.nextInt(goalWords5.size)]
 
     while (true) {
 
@@ -20,7 +26,12 @@ fun wordle() {
         if (input == null || input == "") break
 
         val guess = Guess(input)
-        println(guess.getMatches(goal)?.joinToString())
+        val matches = guess.getMatches(goal)
+        println(matches?.joinToString())
+        if (matches != null && matches.all { it == Match.GREEN }) {
+            println("You won!")
+            break
+        }
 
     }
 
@@ -46,25 +57,7 @@ fun String.letterCount() = this.fold(initial = mutableMapOf<Char, Int>(), operat
     m
 })
 
-class Word(private val word: String) {
 
-    val letterCount = word.fold(initial = mutableMapOf<Char, Int>(), operation = { m, c ->
-        m[c] = m.getOrDefault(key = c, defaultValue = 0) + 1
-        m
-    })
-
-    override fun equals(other: Any?): Boolean {
-        return other is Word && other.word == this.word
-    }
-
-    override fun hashCode(): Int {
-        return word.hashCode()
-    }
-
-    override fun toString(): String = word
-
-
-}
 
 class Guess(word: String) {
 
