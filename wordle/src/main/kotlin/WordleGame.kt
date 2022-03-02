@@ -1,17 +1,24 @@
+import java.io.File
 import kotlin.random.Random
 
 
-class WordleGame(val wordLength: Int, val maxGuesses: Int) {
+class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile: String?) {
+
+    // constructor(wordLength: Int, maxGuesses: Int) : this(wordLength, maxGuesses, null)
 
     constructor() : this(wordLength = 5, maxGuesses = 6)
 
     companion object {
 
+        val PATH_TO_RESOURCES = "./src/main/resources"
+
         val goalWords5 = listOf(
-            "hello", "crane", "words", "doubt", "tango", "audio", "disco", "event", "house", "zebra",
-            "table", "chalk", "music", "world", "japan", "korea", "china", "swiss", "chess", "horse", "sheep", "stand",
+            "hello", "crane", "words", "doubt", "tango", "audio", "disco", "event", "house", "zebra", "robot", "eight",
+            "table", "chalk", "music", "world", "jelly", "sound", "chest", "stair", "chess", "horse", "sheep", "stand",
             "funky", "dance", "month", "peace", "apple", "money", "earth", "light", "yield", "steer", "spear", "piece",
-            "crate", "chain", "laser", "movie", "count", "grown", "sport", "build", "charm", "spare", "three", "trunk"
+            "crate", "chain", "laser", "movie", "count", "grown", "sport", "build", "charm", "spare", "three", "trunk",
+            "night", "dwarf", "giant", "under", "break", "night", "mouse", "train", "track", "stack", "white", "black",
+            "brown", "green", "noise", "brain", "topic", "phase", "pizza", "queue", "valve", "stamp", "young", "brick"
         )
 
         fun String.letterCount() = this.fold(initial = mutableMapOf<Char, Int>(), operation = { m, c ->
@@ -20,7 +27,13 @@ class WordleGame(val wordLength: Int, val maxGuesses: Int) {
         })
     }
 
-    val goal = goalWords5[Random.nextInt(goalWords5.size)]
+    // init {
+    private val goalWords = File("$PATH_TO_RESOURCES/goalwords.txt").readLines().filter { it.isNotBlank() }
+
+    // }
+
+    // val goal = goalWords5[Random.nextInt(goalWords5.size)]
+    val goal = goalWords[Random.nextInt(goalWords.size)]
     val guesses = mutableListOf<String>()
     val matches = mutableListOf<Array<Match>>()
 
