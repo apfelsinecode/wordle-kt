@@ -15,9 +15,9 @@ fun letter(text: String) {
     Box(
         modifier = Modifier.background(
             color = Color.LightGray,
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(10.dp),
         ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,

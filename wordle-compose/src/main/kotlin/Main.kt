@@ -1,6 +1,8 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import androidx.compose.material.MaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +19,18 @@ fun App() {
     var text by remember { mutableStateOf("Hello, World!") }
 
     MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
+        Column {
+            Button(onClick = {
+                text = "Hello, Desktop!"
+            }) {
+                Text(text)
+            }
+            Row {
+                text.split("").map { letter(it) }
+            }
         }
+
+
     }
 }
 
