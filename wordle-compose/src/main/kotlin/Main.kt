@@ -28,6 +28,14 @@ fun App() {
             Row {
                 text.split("").map { letter(it) }
             }
+            letterTable(
+                words = text.split(" "),
+                matches = listOf(
+                    arrayOf(Match.GREEN, Match.GREEN, Match.GRAY, Match.GREEN, Match.YELLOW),
+                    null,
+//                    arrayOf(Match.YELLOW, Match.GRAY, Match.GRAY, Match.GREEN, Match.YELLOW)
+                )
+            )
         }
 
 
@@ -35,7 +43,7 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(onCloseRequest = ::exitApplication, title = "Wordle Compose") {
         App()
     }
 }
