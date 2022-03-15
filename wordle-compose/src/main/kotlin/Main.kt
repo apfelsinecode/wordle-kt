@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
@@ -17,7 +18,10 @@ fun App() {
     
     MaterialTheme {
         Column {
-            val wordleGame = WordleGame()
+
+            val guessesList by rememberSaveable { mutableStateOf(listOf<String>()) }
+            val matchesList by rememberSaveable { mutableStateOf(listOf<Array<Match>>()) }
+            val wordleGame = WordleGame(guesses = guessesList, matches = matchesList)
 
             Button(onClick = {
                 text = "Hello, Desktop!"

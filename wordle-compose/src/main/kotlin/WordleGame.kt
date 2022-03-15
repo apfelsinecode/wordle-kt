@@ -1,14 +1,17 @@
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import java.io.File
 import kotlin.random.Random
 
 
-class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile: String?) {
+class WordleGame(
+    val wordLength: Int = 5,
+    val maxGuesses: Int = 6,
+    var guesses: List<String>,
+    var matches: List<Array<Match>>
+    ) { // , goalWordsFile: String?) {
 
     // constructor(wordLength: Int, maxGuesses: Int) : this(wordLength, maxGuesses, null)
 
-    constructor() : this(wordLength = 5, maxGuesses = 6)
+    // constructor() : this(wordLength = 5, maxGuesses = 6)
 
     companion object {
 
@@ -41,18 +44,18 @@ class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile:
     // }
 
     // val goal = goalWords5[Random.nextInt(goalWords5.size)]
-    val goal = goalWords[Random.nextInt(goalWords.size)]
+    val goal = goalWords[Random.nextInt(goalWords.size)].also { println(it) }
 
     /**
      * a list of all guesses as regular strings
      */
-    var guesses by rememberSaveable { mutableStateOf(listOf<String>()) }
+    // var guesses by rememberSaveable { mutableStateOf(listOf<String>()) }
     // val guesses = mutableListOf<String>()
 
     /**
      * a list of all matches for each guess
      */
-    var matches: List<Array<Match>> by rememberSaveable { mutableStateOf(listOf<Array<Match>>()) }
+    // var matches: List<Array<Match>> by rememberSaveable { mutableStateOf(listOf<Array<Match>>()) }
     //val matches = mutableListOf<Array<Match>>()
 
 

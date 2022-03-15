@@ -69,29 +69,37 @@ fun letterTable(words: List<String>, matches: List<Array<Match>>) {
 
 @Composable
 fun gameBoard(wordleGame: WordleGame) {
+    val onClickEnter = { guess: String ->
+        wordleGame.enterGuess(guess)
+    }
+    var gameState by rememberSaveable { mutableStateOf<GameState?>(null) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Wordle")
+        Text(text = gameState.toString())
         val words = wordleGame.guesses
         val matches = wordleGame.matches
         letterTable(words = words, matches = matches)
-        guessTextField()
+        guessTextField { gameState = onClickEnter(it) }
     }
 }
 
+@Preview
 @Composable
-fun guessTextField() {
+fun guessTextField(onClickEnter: (String) -> Unit) {
     var guess by rememberSaveable { mutableStateOf("") }
 
     Row {
         TextField(
             value = guess,
-            onValueChange = { guess = it }
+            onValueChange = { guess = it },
+            singleLine = true
         )
-        Button(onClick = { println(guess) }) {
+        Button(onClick = { onClickEnter(guess) }) {
             Text("enter")
         }
     }
