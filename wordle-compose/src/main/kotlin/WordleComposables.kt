@@ -2,8 +2,11 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,8 +43,8 @@ fun letter(text: String, matchColor: Match? = null) {
 }
 
 @Composable
-fun letterRow(text: String, matches: Array<Match?>? = null) {
-    val matchRow = matches ?: arrayOfNulls(text.length)
+fun letterRow(text: String, matches: Array<Match>) {
+    val matchRow = matches // ?: arrayOfNulls(text.length)
     Row {
         (text.toCharArray() zip matchRow).map {
                 Box(modifier = Modifier.padding(all = 2.dp)){
@@ -52,14 +55,44 @@ fun letterRow(text: String, matches: Array<Match?>? = null) {
 }
 
 @Composable
-fun letterTable(words: List<String>, matches: List<Array<Match?>?>? = null) {
+fun letterTable(words: List<String>, matches: List<Array<Match>>) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         words.indices.map {
             val word = words[it]
-            val matchRow = matches?.get(it) ?: arrayOfNulls(word.length)
+            val matchRow = matches[it] // ?.get(it)  ?: arrayOfNulls(word.length)
             letterRow(word, matchRow)
+        }
+    }
+}
+
+@Composable
+fun gameBoard(wordleGame: WordleGame) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Wordle")
+        val words = wordleGame.guesses
+        val matches = wordleGame.matches
+        letterTable(words = words, matches = matches)
+        guessTextField()
+    }
+}
+
+@Composable
+fun guessTextField() {
+    var guess by rememberSaveable { mutableStateOf("") }
+
+    Row {
+        TextField(
+            value = guess,
+            onValueChange = { guess = it }
+        )
+        Button(onClick = { println(guess) }) {
+            Text("enter")
         }
     }
 }
@@ -67,5 +100,12 @@ fun letterTable(words: List<String>, matches: List<Array<Match?>?>? = null) {
 @Preview
 @Composable
 fun helloWorld() {
-    letterTable(listOf("HELLO", "WORLD"), null)
+    letterTable(listOf("HELLO", "WORLD"), listOf(
+        arrayOf(
+            Match.GREEN, Match.GREEN, Match.GREEN, Match.GREEN, Match.GREEN
+        ),
+        arrayOf(
+            Match.YELLOW, Match.YELLOW, Match.YELLOW, Match.YELLOW, Match.YELLOW
+        )
+    ))
 }

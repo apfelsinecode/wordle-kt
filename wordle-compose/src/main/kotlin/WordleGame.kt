@@ -1,3 +1,5 @@
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import java.io.File
 import kotlin.random.Random
 
@@ -44,12 +46,14 @@ class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile:
     /**
      * a list of all guesses as regular strings
      */
-    val guesses = mutableListOf<String>()
+    var guesses by rememberSaveable { mutableStateOf(listOf<String>()) }
+    // val guesses = mutableListOf<String>()
 
     /**
      * a list of all matches for each guess
      */
-    val matches = mutableListOf<Array<Match>>()
+    var matches: List<Array<Match>> by rememberSaveable { mutableStateOf(listOf<Array<Match>>()) }
+    //val matches = mutableListOf<Array<Match>>()
 
 
     fun enterGuess(guess: String): GameState? {
@@ -58,10 +62,11 @@ class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile:
 
         if (letters.size == this.wordLength) {
 
-            guesses.add(guess)
+            guesses = guesses + guess
+            // guesses.add(guess)
 
             val letterCount = goal.letterCount()
-            val result = Array(size = letters.size, init = { Match.GRAY } )
+            val result: Array<Match> = Array(size = letters.size, init = { Match.GRAY } )
             letters.forEachIndexed { index, c ->
                 if (goal[index] == c) {
                     result[index] = Match.GREEN
@@ -76,7 +81,8 @@ class WordleGame(val wordLength: Int, val maxGuesses: Int) { // , goalWordsFile:
                     letterCount[c] = count - 1
                 }
             }
-            matches.add(result)
+            matches = matches.plusElement(result)
+
             return if (guess == goal) GameState.WON
                 else if (guesses.size == maxGuesses) GameState.LOST
                 else GameState.ENTER_WORD
